@@ -1,0 +1,13 @@
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "Assets/Images/icon.png"
+  web:
+    generate: true
+    image_path: "Assets/Images/icon.png"
+    background_color: "#hexcode"
+    theme_color: "#hexcode"
+  windows:
+    generate: true
+    image_path: "Assets/Images/icon.png"
+    icon_size: 48 # min:48, max:256, default: 48

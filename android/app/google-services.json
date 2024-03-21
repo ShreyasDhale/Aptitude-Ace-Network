@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "163922478386",
+    "project_id": "apptitude-ace-network",
+    "storage_bucket": "apptitude-ace-network.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:163922478386:android:53040417dad77a449b032b",
+        "android_client_info": {
+          "package_name": "com.example.apptitude_ace_network"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzPBWQSEEPSiMoelq1IGqrBm2wpO6qjrw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
