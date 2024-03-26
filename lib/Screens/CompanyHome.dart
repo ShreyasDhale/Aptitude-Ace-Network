@@ -50,11 +50,13 @@ class _HomeScreenState extends State<CompanyHome> {
                 ),
                 Row(
                   children: [
-                    Text(
-                      "${details['email']}",
-                      style: style,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                    Expanded(
+                      child: Text(
+                        "${details['email']}",
+                        style: style,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ],
                 ),

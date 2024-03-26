@@ -15,5 +15,11 @@ Future<void> main() async {
   await Messaging.getToken();
   Messaging.initInfo();
   requestPermission();
+  // Vishal Token
+
+  // Messaging.sendPushMessage(
+  //     "cmhtWrdkSOWMJ1tY5ulHw2:APA91bHflNrZ6dV0M6SiRVaQWLSRzJm4n-mbw5HPGttKtphpprCKoQzdCiuv5NHUJQa-FFjIyFvCaUq3-fM6-LfmFBhrGWsgM4aH70eok6dTWrERdQo9RphYbXsxVVggjTqstj6w-HAf",
+  //     "Hi User Just Loged in",
+  //     "Notification Title");
   runApp(const MyApp());
 }
