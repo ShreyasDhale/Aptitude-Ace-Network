@@ -1,4 +1,3 @@
-import 'package:apptitude_ace_network/Backend/Firebase/FirebaseMessaging.dart';
 import 'package:apptitude_ace_network/Screens/Company/AddQuestions.dart';
 import 'package:apptitude_ace_network/Screens/Company/CreateTest.dart';
 import 'package:apptitude_ace_network/Screens/inAppUpdate.dart';
@@ -32,7 +31,7 @@ class _HomeScreenState extends State<CompanyHome> {
         appBar: AppBar(
           backgroundColor: Colors.grey.shade200,
           title: ListTile(
-            contentPadding: EdgeInsets.all(0),
+            contentPadding: const EdgeInsets.all(0),
             leading: CachedNetworkImage(
               imageUrl: (details['companyLogo'] != null)
                   ? details['companyLogo']
@@ -193,8 +192,6 @@ class _HomeScreenState extends State<CompanyHome> {
                 width: 150,
                 height: 60,
                 onTap: () {
-                  Messaging.sendPushMessage(
-                      token, "Cloud notification test", "Test");
                   Navigator.push(
                       context,
                       MaterialPageRoute(

@@ -1,3 +1,4 @@
+import 'package:apptitude_ace_network/Backend/Firebase/FirebaseHelper.dart';
 import 'package:apptitude_ace_network/Backend/Firebase/FirebaseMessaging.dart';
 import 'package:apptitude_ace_network/Theme/Constants.dart';
 import 'package:apptitude_ace_network/Widgets/FormWidgets.dart';
@@ -254,6 +255,7 @@ class _CreateTestState extends State<CreateTest> {
         passKeyController.text.trim() != "") {
       String id;
       String name;
+      FirebaseHelper fh = FirebaseHelper();
       if (widget.userId != "") {
         id = widget.userId;
         name = widget.name;
@@ -271,26 +273,31 @@ class _CreateTestState extends State<CreateTest> {
           return data['name'];
         });
       }
-      await test.add({
-        "userId": id,
-        "duration": duration!.inMinutes,
-        "subject": selectedSubject,
-        "numberOfQuestions": numberController.text.trim(),
-        "marks/que": markController.text.trim(),
-        "negatve/Marks": negativeController.text.trim(),
-        "passkey": passKeyController.text.trim(),
-        "createdAt": DateTime.now()
-      });
-      Messaging.notifyAllUsers("New Test !!",
-          "New Test for $selectedSubject is created by $name", context);
-      setState(() {
-        numberController.text = "";
-        markController.text = "";
-        negativeController.text = "";
-        passKeyController.text = "";
-        durationController.text = "";
-      });
-      showSuccess(context, "Test Created Successfully");
+      int count = int.parse(numberController.text);
+      if (!await fh.canCreate(count, selectedSubject)) {
+        await test.add({
+          "userId": id,
+          "duration": duration!.inMinutes,
+          "subject": selectedSubject,
+          "numberOfQuestions": numberController.text.trim(),
+          "marks/que": markController.text.trim(),
+          "negatve/Marks": negativeController.text.trim(),
+          "passkey": passKeyController.text.trim(),
+          "createdAt": DateTime.now()
+        });
+        Messaging.notifyAllUsers("New Test !!",
+            "New Test for $selectedSubject is created by $name", context);
+        setState(() {
+          numberController.text = "";
+          markController.text = "";
+          negativeController.text = "";
+          passKeyController.text = "";
+          durationController.text = "";
+        });
+        showSuccess(context, "Test Created Successfully");
+      } else {
+        showFailure(context, "Cant Create Test");
+      }
     } else {
       showFailure(context, "Please Enter All Details");
     }

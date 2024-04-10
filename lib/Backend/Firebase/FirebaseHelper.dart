@@ -98,4 +98,13 @@ class FirebaseHelper {
       return value.docs.first.id;
     });
   }
+
+  Future<bool> canCreate(int count, String subject) async {
+    return await questions
+        .where("subject", isEqualTo: subject)
+        .get()
+        .then((value) {
+      return value.docs.length <= count;
+    });
+  }
 }

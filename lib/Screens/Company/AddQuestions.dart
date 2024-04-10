@@ -1,4 +1,5 @@
 import 'package:apptitude_ace_network/Backend/Firebase/FirebaseHelper.dart';
+import 'package:apptitude_ace_network/Theme/Constants.dart';
 import 'package:apptitude_ace_network/Widgets/FormWidgets.dart';
 import 'package:apptitude_ace_network/Widgets/Messages.dart';
 import 'package:apptitude_ace_network/models/QuestionModel.dart';
@@ -37,6 +38,7 @@ class _AddQuestionState extends State<AddQuestion> {
 
   void getSubjects() async {
     List<String> sub = await fh.getSubjects();
+
     setState(() {
       subject = sub;
       selectedSubject = sub.first;
@@ -73,13 +75,25 @@ class _AddQuestionState extends State<AddQuestion> {
                         style: GoogleFonts.stylish(
                             fontSize: 30, color: Colors.red),
                       ),
-                      Text(
-                        count.toString(),
-                        style: GoogleFonts.stylish(
-                            fontSize: 35,
-                            color: Colors.red,
-                            fontWeight: FontWeight.bold),
-                      ),
+                      StreamBuilder(
+                          stream: question
+                              .where("subject", isEqualTo: selectedSubject)
+                              .snapshots(),
+                          builder: ((context, snapshot) {
+                            if (snapshot.hasData && snapshot.data != null) {
+                              return Text(
+                                snapshot.data!.docs.length.toString(),
+                                style: GoogleFonts.stylish(
+                                    fontSize: 30, color: Colors.red),
+                              );
+                            } else {
+                              return Text(
+                                '0',
+                                style: GoogleFonts.stylish(
+                                    fontSize: 30, color: Colors.red),
+                              );
+                            }
+                          }))
                     ],
                   ),
                   const SizedBox(
@@ -177,9 +191,6 @@ class _AddQuestionState extends State<AddQuestion> {
                   text: "Add Questions",
                   loader: loader1,
                   onTap: () {
-                    setState(() {
-                      loader1 = true;
-                    });
                     print(questionController.text);
                     String str = questionController.text;
                     List<String> data = str.split("\n");
@@ -187,15 +198,21 @@ class _AddQuestionState extends State<AddQuestion> {
                     data.add(selectedSubject);
                     data.add("");
                     print(data);
-                    Question que = Question.listToQuestion(data);
-                    fh.uploadQuestion(que, context);
-                    fh.updateCount(getCount);
-                    showSuccess(context, "Question Uploaded !!");
-                    setState(() {
-                      questionController.text = "";
-                      descriptionController.text = "";
-                      loader1 = false;
-                    });
+                    if (data.isNotEmpty && data.length == 8) {
+                      setState(() {
+                        loader1 = true;
+                      });
+                      Question que = Question.listToQuestion(data);
+                      fh.uploadQuestion(que, context);
+                      showSuccess(context, "Question Uploaded !!");
+                      setState(() {
+                        questionController.text = "";
+                        descriptionController.text = "";
+                        loader1 = false;
+                      });
+                    } else {
+                      showFailure(context, "Please Enter all Details");
+                    }
                   }),
               const SizedBox(
                 height: 25,
@@ -222,7 +239,7 @@ class _AddQuestionState extends State<AddQuestion> {
                     setState(() {
                       loader2 = true;
                     });
-                    await fh.addSubject(subjectController.text, context);
+                    await fh.addSubject(subjectController.text.trim(), context);
                     getSubjects();
                     setState(() {
                       loader2 = false;

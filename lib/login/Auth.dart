@@ -112,6 +112,7 @@ class Auth {
         try {
           await auth.signInWithEmailAndPassword(
               email: email, password: password);
+          user = auth.currentUser;
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (context) => const StudentHome()),

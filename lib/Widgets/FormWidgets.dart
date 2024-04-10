@@ -7,7 +7,9 @@ Widget customTextfield({
   required TextEditingController controller,
   TextInputType type = TextInputType.name,
   Color borderColor = Colors.black,
+  Color fillColor = Colors.white,
   String label = "Enter Text",
+  bool keepBorder = true,
   bool enabled = true,
   Widget leading = const SizedBox(),
   Widget trailing = const SizedBox(),
@@ -20,15 +22,17 @@ Widget customTextfield({
     enabled: enabled,
     decoration: InputDecoration(
         filled: true,
-        fillColor: Colors.white,
+        fillColor: fillColor,
         focusColor: Colors.blue,
         labelText: label,
         labelStyle: style,
         prefixIcon: leading,
         suffixIcon: trailing,
-        border: OutlineInputBorder(
-            borderSide: BorderSide(color: borderColor, width: 1),
-            borderRadius: BorderRadius.circular(10))),
+        border: keepBorder
+            ? OutlineInputBorder(
+                borderSide: BorderSide(color: borderColor, width: 1),
+                borderRadius: BorderRadius.circular(10))
+            : null),
   );
 }
 

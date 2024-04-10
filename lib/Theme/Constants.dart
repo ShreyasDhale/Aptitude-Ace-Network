@@ -22,8 +22,16 @@ User? user = auth.currentUser;
 
 // Pages Lists
 
-List<Widget> pages = const [Company(), CompanyResults(), CompanyProfile()];
-List<Widget> pages1 = const [Student(), PastTest(), StudentProfile()];
+List<Widget> pages = const [
+  Company(),
+  CompanyResults(),
+  CompanyProfile(),
+];
+List<Widget> pages1 = const [
+  Student(),
+  PastTest(),
+  StudentProfile(),
+];
 
 // Firebase Instances
 

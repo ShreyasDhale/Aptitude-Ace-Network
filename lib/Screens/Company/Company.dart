@@ -1,5 +1,6 @@
 import 'package:apptitude_ace_network/Backend/Firebase/FirebaseHelper.dart';
 import 'package:apptitude_ace_network/Theme/Constants.dart';
+import 'package:apptitude_ace_network/Widgets/ConfirmDialog.dart';
 import 'package:apptitude_ace_network/Widgets/FormWidgets.dart';
 import 'package:apptitude_ace_network/Widgets/Messages.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -23,9 +24,11 @@ class _CompanyState extends State<Company> {
 
   Future<void> getId() async {
     String str = await FirebaseHelper.getId();
-    setState(() {
-      id = str;
-    });
+    if (mounted) {
+      setState(() {
+        id = str;
+      });
+    }
   }
 
   @override
@@ -36,12 +39,13 @@ class _CompanyState extends State<Company> {
         child: StreamBuilder(
             stream: test.where("userId", isEqualTo: id).snapshots(),
             builder: (context, snapshot) {
-              if (snapshot.hasData || snapshot.data != null) {
+              if (snapshot.hasData && snapshot.data != null) {
                 return ListView.builder(
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, index) {
                       Map<String, dynamic> test = snapshot.data!.docs[index]
                           .data() as Map<String, dynamic>;
+                      String testId = snapshot.data!.docs[index].id;
                       int number = int.parse(test['numberOfQuestions']);
                       int marksper = int.parse(test['marks/que']);
                       int marks = number * marksper;
@@ -121,11 +125,14 @@ class _CompanyState extends State<Company> {
                                         children: [
                                           Expanded(
                                             child: customButton(
-                                                text: "Edit",
-                                                bgColor: Colors.orange,
+                                                text: "Delete",
+                                                bgColor: Colors.redAccent,
                                                 onTap: () {
-                                                  showMessage(context,
-                                                      "Work in Progress");
+                                                  showConfirm(
+                                                      context: context,
+                                                      confirmation:
+                                                          "You are trying to delete the test for ${test['subject']}?",
+                                                      testId: testId);
                                                 },
                                                 height: 40,
                                                 borderRadius: 4),
@@ -153,7 +160,11 @@ class _CompanyState extends State<Company> {
                           ),
                           const SizedBox(
                             height: 10,
-                          )
+                          ),
+                          if (snapshot.data!.docs.length - 1 == index)
+                            const SizedBox(
+                              height: 56,
+                            ),
                         ],
                       );
                     });

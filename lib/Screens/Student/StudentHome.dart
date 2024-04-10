@@ -1,3 +1,4 @@
+import 'package:apptitude_ace_network/Screens/inAppUpdate.dart';
 import 'package:apptitude_ace_network/Theme/Constants.dart';
 import 'package:apptitude_ace_network/login/QuestionPage.dart';
 import 'package:flutter/material.dart';
@@ -49,10 +50,10 @@ class _StudentHomeState extends State<StudentHome> {
           ],
         ),
         actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 15.0, bottom: 9),
-            child: CircleAvatar(),
-          ),
+          // Padding(
+          //   padding: EdgeInsets.only(right: 15.0, bottom: 9),
+          //   child: CircleAvatar(),
+          // ),
         ],
         backgroundColor: Colors.purple.shade300,
         iconTheme: const IconThemeData(color: Colors.white),
@@ -62,6 +63,22 @@ class _StudentHomeState extends State<StudentHome> {
           children: [
             const SizedBox(
               height: 90,
+            ),
+            ListTile(
+              title: Text(
+                "Update",
+                style: style,
+              ),
+              leading: const Icon(Icons.update),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const InAppUpdate()),
+                );
+              },
+            ),
+            const SizedBox(
+              height: 10,
             ),
             ListTile(
               title: Text(
@@ -86,8 +103,10 @@ class _StudentHomeState extends State<StudentHome> {
         type: BottomNavigationBarType.fixed,
         currentIndex: currentIndex,
         backgroundColor: Colors.purple.shade300,
+        fixedColor: Colors.white,
         selectedLabelStyle: style.copyWith(color: Colors.white),
-        unselectedLabelStyle: style.copyWith(color: Colors.white60),
+        showSelectedLabels: true,
+        showUnselectedLabels: false,
         onTap: (value) {
           setState(() {
             currentIndex = value;
