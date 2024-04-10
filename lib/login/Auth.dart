@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:apptitude_ace_network/Admin/AprooveCompany.dart';
-import 'package:apptitude_ace_network/Screens/CompanyHome.dart';
-import 'package:apptitude_ace_network/Screens/StudentHome.dart';
+import 'package:apptitude_ace_network/Screens/Company/CompanyHome.dart';
+import 'package:apptitude_ace_network/Screens/Student/StudentHome.dart';
 import 'package:apptitude_ace_network/Theme/Constants.dart';
 import 'package:apptitude_ace_network/Widgets/Messages.dart';
 import 'package:apptitude_ace_network/login/QuestionPage.dart';
@@ -85,17 +85,13 @@ class Auth {
       load(true);
       await auth.createUserWithEmailAndPassword(
           email: email, password: password);
-      await auth.signInWithEmailAndPassword(email: email, password: password);
-      String id = user!.uid;
-      await auth.signOut();
-      student.doc(id).set({
+      student.add({
         "name": name,
         "email": email,
         "phone": phone,
         "collage": collageName,
         "token": token,
       });
-      await auth.signOut();
       showSuccess(context, "User Created SuccessFully !!");
       load(false);
     } on FirebaseAuthException catch (e) {

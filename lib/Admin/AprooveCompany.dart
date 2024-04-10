@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:apptitude_ace_network/Admin/releaseNewApk.dart';
 import 'package:apptitude_ace_network/Backend/Firebase/FirebaseHelper.dart';
 import 'package:apptitude_ace_network/Theme/Constants.dart';
 import 'package:apptitude_ace_network/Widgets/FormWidgets.dart';
@@ -23,7 +24,12 @@ class _ApproveRequestsState extends State<ApproveRequests> {
   int index = 0;
   FirebaseHelper fh = FirebaseHelper();
 
-  List<Widget> pages = [AllRequests(), UnVerified(), Verified()];
+  List<Widget> pages = [
+    AllRequests(),
+    UnVerified(),
+    Verified(),
+    const ReleaseUpdate()
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,6 +55,7 @@ class _ApproveRequestsState extends State<ApproveRequests> {
       ),
       body: pages[index],
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         currentIndex: index,
         backgroundColor: Colors.blue,
         selectedItemColor: Colors.white,
@@ -65,6 +72,7 @@ class _ApproveRequestsState extends State<ApproveRequests> {
               icon: Icon(Icons.device_unknown), label: "Unverified"),
           BottomNavigationBarItem(
               icon: Icon(Icons.verified_user), label: "Verified"),
+          BottomNavigationBarItem(icon: Icon(Icons.update), label: "Release"),
         ],
       ),
     );

@@ -1,3 +1,9 @@
+import 'package:apptitude_ace_network/Screens/Company/Company.dart';
+import 'package:apptitude_ace_network/Screens/Company/CompanyProfile.dart';
+import 'package:apptitude_ace_network/Screens/Company/CompanyResults.dart';
+import 'package:apptitude_ace_network/Screens/Student/History.dart';
+import 'package:apptitude_ace_network/Screens/Student/Profile.dart';
+import 'package:apptitude_ace_network/Screens/Student/Student.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -14,6 +20,11 @@ TextStyle style = GoogleFonts.poppins();
 
 User? user = auth.currentUser;
 
+// Pages Lists
+
+List<Widget> pages = const [Company(), CompanyResults(), CompanyProfile()];
+List<Widget> pages1 = const [Student(), PastTest(), StudentProfile()];
+
 // Firebase Instances
 
 FirebaseAuth auth = FirebaseAuth.instance;
@@ -23,6 +34,9 @@ FirebaseStorage bucket = FirebaseStorage.instance;
 
 CollectionReference student = FirebaseFirestore.instance.collection("Student");
 CollectionReference company = FirebaseFirestore.instance.collection("Company");
+DocumentReference appLink =
+    FirebaseFirestore.instance.collection("Download_Links").doc("AppLink");
+CollectionReference test = FirebaseFirestore.instance.collection("Test");
 CollectionReference question =
     FirebaseFirestore.instance.collection("Questions");
 CollectionReference subject = FirebaseFirestore.instance.collection("Subjects");

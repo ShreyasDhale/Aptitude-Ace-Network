@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:apptitude_ace_network/Backend/Firebase/FirebaseMessaging.dart';
 import 'package:apptitude_ace_network/Theme/Constants.dart';
 import 'package:apptitude_ace_network/Widgets/Messages.dart';
 import 'package:apptitude_ace_network/models/QuestionModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 class FirebaseHelper {
@@ -21,6 +24,20 @@ class FirebaseHelper {
       "correct": question.correct,
       "subject": question.subject,
       "desc": question.desc,
+    });
+  }
+
+  Future<void> updateVersion(File file, String version) async {
+    String fileName = file.path.split(Platform.pathSeparator).last;
+
+    UploadTask uploadTask1 =
+        bucket.ref().child("Apps").child(fileName).putFile(file);
+    TaskSnapshot taskSnapshot = await uploadTask1;
+    String downloadUrl = await taskSnapshot.ref.getDownloadURL();
+
+    appLink.update({
+      "link": downloadUrl,
+      "latestVersion": version,
     });
   }
 
@@ -74,5 +91,11 @@ class FirebaseHelper {
       }
     });
     showSuccess(context, "Updated Successfully !");
+  }
+
+  static Future<String> getId() {
+    return company.where("email", isEqualTo: user!.email).get().then((value) {
+      return value.docs.first.id;
+    });
   }
 }

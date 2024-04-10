@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:apptitude_ace_network/Theme/Constants.dart';
+import 'package:apptitude_ace_network/Widgets/Messages.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -71,6 +73,31 @@ class Messaging {
     } catch (e) {
       print(e);
     }
+  }
+
+  static Future<void> notifyAllUsers(
+      String title, String body, BuildContext context) async {
+    List<String> tokens = [];
+    await company.get().then((value) {
+      for (var doc in value.docs) {
+        var data = doc.data() as Map<String, dynamic>;
+        if (!tokens.contains(data["token"])) {
+          tokens.add(data["token"]);
+        }
+      }
+    });
+    await student.get().then((value) {
+      for (var doc in value.docs) {
+        var data = doc.data() as Map<String, dynamic>;
+        if (!tokens.contains(data["token"])) {
+          tokens.add(data["token"]);
+        }
+      }
+    });
+    for (int count = 0; count < tokens.length; count++) {
+      await sendPushMessage(tokens[count], body, title);
+    }
+    showSuccess(context, "Notified All Users");
   }
 
   static Future<void> sendPushMessage(

@@ -114,23 +114,27 @@ class LoginPageState extends State<CompanySignup> {
                       _passwordController.text.trim().isNotEmpty &&
                       logo != null &&
                       document != null) {
-                    await Auth.companySignup(
-                        _nameController.text.trim(),
-                        _emailController.text.trim(),
-                        _passwordController.text.trim(),
-                        logo!,
-                        document!,
-                        context,
-                        loading);
-                    setState(() {
-                      _nameController.text = "";
-                      _emailController.text = "";
-                      _passwordController.text = "";
-                      logo = null;
-                      document = null;
-                      logoName = "Pick Logo For Your Company";
-                      docName = "Pick Document for Verification";
-                    });
+                    if (isValidEmail(_emailController.text.trim())) {
+                      await Auth.companySignup(
+                          _nameController.text.trim(),
+                          _emailController.text.trim(),
+                          _passwordController.text.trim(),
+                          logo!,
+                          document!,
+                          context,
+                          loading);
+                      setState(() {
+                        _nameController.text = "";
+                        _emailController.text = "";
+                        _passwordController.text = "";
+                        logo = null;
+                        document = null;
+                        logoName = "Pick Logo For Your Company";
+                        docName = "Pick Document for Verification";
+                      });
+                    } else {
+                      showFailure(context, "Email Formated Badly");
+                    }
                   } else {
                     showFailure(context, "Please Fill All The Details");
                   }
@@ -160,6 +164,12 @@ class LoginPageState extends State<CompanySignup> {
         ),
       ),
     );
+  }
+
+  bool isValidEmail(String email) {
+    // Regular expression for validating an email address
+    final RegExp regex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    return regex.hasMatch(email);
   }
 
   void loading(bool isUploading) {

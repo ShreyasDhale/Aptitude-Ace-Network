@@ -1,5 +1,7 @@
 import 'package:apptitude_ace_network/Backend/Firebase/FirebaseMessaging.dart';
-import 'package:apptitude_ace_network/Screens/AddQuestions.dart';
+import 'package:apptitude_ace_network/Screens/Company/AddQuestions.dart';
+import 'package:apptitude_ace_network/Screens/Company/CreateTest.dart';
+import 'package:apptitude_ace_network/Screens/inAppUpdate.dart';
 import 'package:apptitude_ace_network/Theme/Constants.dart';
 import 'package:apptitude_ace_network/Widgets/FormWidgets.dart';
 import 'package:apptitude_ace_network/login/Auth.dart';
@@ -21,6 +23,8 @@ class _HomeScreenState extends State<CompanyHome> {
   }
 
   Map<String, dynamic> details = {};
+  String id = "";
+  String name = "";
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +67,36 @@ class _HomeScreenState extends State<CompanyHome> {
               ],
             ),
           ),
+        ),
+        body: pages[currentIndex],
+        bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.grey.shade200,
+          unselectedItemColor: Colors.black,
+          onTap: (value) {
+            setState(() {
+              currentIndex = value;
+            });
+          },
+          selectedItemColor: Colors.black,
+          showUnselectedLabels: false,
+          showSelectedLabels: false,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home,
+              ),
+              label: 'home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.people),
+              label: 'Profile',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Profile',
+            ),
+          ],
         ),
         drawer: Drawer(
           backgroundColor: Colors.white,
@@ -124,6 +158,21 @@ class _HomeScreenState extends State<CompanyHome> {
                 ListTile(
                   tileColor: Colors.grey.shade300,
                   title: Text(
+                    "Check for update",
+                    style: style,
+                  ),
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: ((context) => const InAppUpdate()))),
+                  leading: const Icon(Icons.update),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                ListTile(
+                  tileColor: Colors.grey.shade300,
+                  title: Text(
                     "Logout",
                     style: style,
                   ),
@@ -137,20 +186,6 @@ class _HomeScreenState extends State<CompanyHome> {
             ),
           ),
         ),
-        // bottomNavigationBar: BottomNavigationBar(
-        //   backgroundColor: Colors.black,
-        //   selectedLabelStyle: style,
-        //   unselectedLabelStyle: style,
-        //   items: [
-        //     BottomNavigationBarItem(
-        //       icon: Icon(Icons.person),
-        //       label: "User",
-        //     ),
-        //     BottomNavigationBarItem(icon: Icon(Icons.person), label: "User"),
-        //     BottomNavigationBarItem(icon: Icon(Icons.person), label: "User"),
-        //     BottomNavigationBarItem(icon: Icon(Icons.person), label: "User"),
-        //   ],
-        // ),
         floatingActionButton: Container(
             margin: const EdgeInsets.all(0),
             child: customButton(
@@ -158,14 +193,30 @@ class _HomeScreenState extends State<CompanyHome> {
                 width: 150,
                 height: 60,
                 onTap: () {
-                  Messaging.sendPushMessage(token, "Ky Bghto", "Lavdya");
+                  Messaging.sendPushMessage(
+                      token, "Cloud notification test", "Test");
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => CreateTest(
+                                userId: id,
+                                name: name,
+                              )));
                 })));
   }
+
+  bool changeScreen() {
+    return false;
+  }
+
+  int currentIndex = 0;
 
   Future<void> getCompanyDetails() async {
     await company.where("email", isEqualTo: user?.email).get().then((value) {
       setState(() {
         details = value.docs.first.data() as Map<String, dynamic>;
+        name = details['name'];
+        id = value.docs.first.id;
       });
     });
   }

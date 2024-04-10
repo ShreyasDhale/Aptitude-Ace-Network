@@ -39,3 +39,22 @@ void showFailure(BuildContext context, String msg) {
     behavior: SnackBarBehavior.floating,
   ));
 }
+
+void showMessage(BuildContext context, String msg) {
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    content: AnimatedContainer(
+      duration: const Duration(milliseconds: 500),
+      child: Center(
+        child: Text(
+          msg,
+          style: style.copyWith(color: Colors.white),
+        ),
+      ),
+    ),
+    backgroundColor: Colors.grey.shade800,
+    closeIconColor: Colors.white,
+    elevation: 4,
+    showCloseIcon: true,
+    behavior: SnackBarBehavior.floating,
+  ));
+}

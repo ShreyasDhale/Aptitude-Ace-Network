@@ -8,6 +8,7 @@ Widget customTextfield({
   TextInputType type = TextInputType.name,
   Color borderColor = Colors.black,
   String label = "Enter Text",
+  bool enabled = true,
   Widget leading = const SizedBox(),
   Widget trailing = const SizedBox(),
 }) {
@@ -16,6 +17,7 @@ Widget customTextfield({
     controller: controller,
     maxLines: null,
     style: style,
+    enabled: enabled,
     decoration: InputDecoration(
         filled: true,
         fillColor: Colors.white,
