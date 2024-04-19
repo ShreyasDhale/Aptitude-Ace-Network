@@ -104,7 +104,14 @@ class FirebaseHelper {
         .where("subject", isEqualTo: subject)
         .get()
         .then((value) {
-      return value.docs.length <= count;
+      return value.docs.length + 1 <= count;
     });
+  }
+
+  Future<Map<String, dynamic>> getCompanyDetails(String id) async {
+    return await company
+        .doc(id)
+        .get()
+        .then((value) => value.data() as Map<String, dynamic>);
   }
 }

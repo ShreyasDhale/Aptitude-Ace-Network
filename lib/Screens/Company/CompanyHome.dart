@@ -198,6 +198,7 @@ class _HomeScreenState extends State<CompanyHome> {
                           builder: (context) => CreateTest(
                                 userId: id,
                                 name: name,
+                                details: details,
                               )));
                 })));
   }

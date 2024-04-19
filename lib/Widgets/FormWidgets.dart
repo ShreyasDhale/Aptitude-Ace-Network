@@ -11,13 +11,14 @@ Widget customTextfield({
   String label = "Enter Text",
   bool keepBorder = true,
   bool enabled = true,
+  bool multiLine = true,
   Widget leading = const SizedBox(),
   Widget trailing = const SizedBox(),
 }) {
   return TextFormField(
     keyboardType: type,
     controller: controller,
-    maxLines: null,
+    maxLines: multiLine ? null : 1,
     style: style,
     enabled: enabled,
     decoration: InputDecoration(

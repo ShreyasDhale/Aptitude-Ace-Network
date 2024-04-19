@@ -9,16 +9,21 @@ import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
 class CreateTest extends StatefulWidget {
+  final Map<String, dynamic> details;
   final String userId;
   final String name;
-  const CreateTest({super.key, required this.userId, required this.name});
+  const CreateTest(
+      {super.key,
+      required this.details,
+      required this.userId,
+      required this.name});
 
   @override
   State<CreateTest> createState() => _CreateTestState();
 }
 
 class _CreateTestState extends State<CreateTest> {
-  List<String> Subjects = [];
+  List<String> subjects = [];
   String selectedSubject = "";
   Duration? duration;
 
@@ -42,9 +47,9 @@ class _CreateTestState extends State<CreateTest> {
       subjects.add(data['name']);
     }
     setState(() {
-      Subjects = [];
-      Subjects = subjects;
-      selectedSubject = Subjects.first;
+      this.subjects = [];
+      this.subjects = subjects;
+      selectedSubject = subjects.first;
     });
   }
 
@@ -146,7 +151,7 @@ class _CreateTestState extends State<CreateTest> {
                       selectedSubject = newValue!;
                     });
                   },
-                  items: Subjects.map<DropdownMenuItem<String>>((String value) {
+                  items: subjects.map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Padding(
@@ -275,6 +280,10 @@ class _CreateTestState extends State<CreateTest> {
       }
       int count = int.parse(numberController.text);
       if (!await fh.canCreate(count, selectedSubject)) {
+        var subjectDetails = await subject
+            .where("name", isEqualTo: selectedSubject)
+            .get()
+            .then((value) => value.docs.first.data() as Map<String, dynamic>);
         await test.add({
           "userId": id,
           "duration": duration!.inMinutes,
@@ -283,6 +292,9 @@ class _CreateTestState extends State<CreateTest> {
           "marks/que": markController.text.trim(),
           "negatve/Marks": negativeController.text.trim(),
           "passkey": passKeyController.text.trim(),
+          "companyName": widget.details['name'],
+          "companyLogo": widget.details['companyLogo'],
+          "subjectLogo": subjectDetails['logo'],
           "createdAt": DateTime.now()
         });
         Messaging.notifyAllUsers("New Test !!",
